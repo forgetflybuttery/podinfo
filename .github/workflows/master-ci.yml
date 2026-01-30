@@ -1,7 +1,7 @@
 name: Build and Push to GAR  # 剧本的名字
 on:
   push:
-    branches: [ "dev" ]   # 当你向 dev 分支 push 时触发
+    branches: [ "dev" ]   # 向 dev 分支 push 时触发
 
 jobs:
   build-and-push:
@@ -21,8 +21,10 @@ jobs:
 
       # 构建包含 Go 编译过程的 Docker 镜像cd
       - name: 'Docker Auth'
+      ## 将sa的身份：将 GCP 身份注入 Docker
         run: |
-          gcloud auth configure-docker asia-northeast1-docker.pkg.dev --quiet
+          gcloud auth configure-docker asia-northeast1-docker.pkg.dev --quiet    
+
       - name: Build and Push
         run: |
           docker build -t asia-northeast1-docker.pkg.dev/tokyo-bird-485807-h6/dev-test-repo/podinfo:v1 .
