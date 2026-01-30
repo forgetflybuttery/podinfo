@@ -9,7 +9,6 @@ jobs:
     permissions:             # 必须配置，否则无法进行 WIF 认证
       contents: 'read'
       id-token: 'write'
-
     steps:
       - name: Checkout Code
         uses: actions/checkout@v4
@@ -21,6 +20,9 @@ jobs:
           service_account: 'local-k8s-puller@tokyo-bird-485807-h6.iam.gserviceaccount.com'
 
       # 构建包含 Go 编译过程的 Docker 镜像cd
+      - name: 'Docker Auth'
+        run: |
+          gcloud auth configure-docker asia-northeast1-docker.pkg.dev --quiet
       - name: Build and Push
         run: |
           docker build -t asia-northeast1-docker.pkg.dev/tokyo-bird-485807-h6/dev-test-repo/podinfo:v1 .
